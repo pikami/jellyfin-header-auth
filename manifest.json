@@ -1,0 +1,20 @@
+[
+  {
+    "guid": "df78a0dc-a52a-4a9b-bae4-3f60390b83c4",
+    "name": "JellyfinHeaderAuth",
+    "overview": "Jellyfin plugin for header based authentication",
+    "description": "This is a longer description that can span more than one line and include details about your plugin.\n",
+    "owner": "pikami",
+    "category": "General",
+    "versions": [
+      {
+        "version": "1.0.0.0",
+        "changelog": "- Initial implementation",
+        "targetAbi": "10.7.0.0",
+        "sourceUrl": "https://github.com/pikami/jellyfin-header-auth/releases/download/1.0.0.0/jellyfinheaderauth_1.0.0.0.zip",
+        "checksum": "93d4cfdf45bebc6e90f175e30a9d26c7",
+        "timestamp": "2022-04-16T21:40:42Z"
+      }
+    ]
+  }
+]
