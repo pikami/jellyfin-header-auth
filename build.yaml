@@ -1,17 +1,16 @@
 ---
 name: "JellyfinHeaderAuth"
 guid: "df78a0dc-a52a-4a9b-bae4-3f60390b83c4"
-version: "2"
-targetAbi: "10.7.0.0"
-framework: "net5.0"
+version: "1.0.0.0"
+targetAbi: "10.8.0.0"
+framework: "net6.0"
 overview: "Jellyfin plugin for header based authentication"
 description: >
-  This is a longer description that can span more than one line and include details about your plugin.
+  This plugin authenticates users based on the 'X-Forwarded-UserName' header value.
 
-category: "General"
+category: "Authentication"
 owner: "pikami"
 artifacts:
   - "Jellyfin.Plugin.JellyfinHeaderAuth.dll"
 changelog: >
   changelog
-
