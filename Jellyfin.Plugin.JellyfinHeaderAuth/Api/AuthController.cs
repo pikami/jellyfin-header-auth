@@ -2,6 +2,8 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Jellyfin.Data.Entities;
 using Jellyfin.Data.Enums;
+using Jellyfin.Plugin.JellyfinHeaderAuth.Helpers;
+using Jellyfin.Plugin.JellyfinHeaderAuth.Models;
 using MediaBrowser.Controller.Authentication;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Session;
@@ -27,18 +29,26 @@ namespace Jellyfin.Plugin.JellyfinHeaderAuth.Api
         }
 
         [HttpGet]
-        [Produces(MediaTypeNames.Application.Json)]
-        public async Task<ActionResult> Auth()
+        public ActionResult GetAuthPage()
         {
-            if (Request.Headers.TryGetValue("X-Forwarded-UserName", out var headerUsername)) {
-                var authenticationResult = await Authenticate(headerUsername).ConfigureAwait(false);
-                return Ok(authenticationResult);
-            }
+            var requestBase = Request.Scheme + "://" + Request.Host + Request.PathBase;
 
-            return BadRequest("Something went wrong");
+            return Content(WebResponse.Generator(requestBase), MediaTypeNames.Text.Html);
         }
 
-        private async Task<AuthenticationResult> Authenticate(string username)
+        [HttpPost]
+        [Produces(MediaTypeNames.Application.Json)]
+        public async Task<ActionResult> StartAuth([FromBody] AuthPayload payload)
+        {
+            if (Request.Headers.TryGetValue("X-Forwarded-UserName", out var headerUsername)) {
+                var authenticationResult = await Authenticate(headerUsername, payload).ConfigureAwait(false);
+                return Ok(authenticationResult);
+            } else {
+                return BadRequest("The UserName header was not found.");
+            }
+        }
+
+        private async Task<AuthenticationResult> Authenticate(string username, AuthPayload authPayload)
         {
             User user = null;
             user = _userManager.GetUserByName(username);
@@ -51,12 +61,16 @@ namespace Jellyfin.Plugin.JellyfinHeaderAuth.Api
                 user.SetPermission(PermissionKind.EnableAllFolders, false);
             }
 
-            user.AuthenticationProviderId = GetType().FullName;
+            user.AuthenticationProviderId = "Jellyfin.Server.Implementations.Users.DefaultAuthenticationProvider";
             await _userManager.UpdateUserAsync(user).ConfigureAwait(false);
 
             var authRequest = new AuthenticationRequest();
             authRequest.UserId = user.Id;
             authRequest.Username = user.Username;
+            authRequest.App = authPayload.AppName;
+            authRequest.AppVersion = authPayload.AppVersion;
+            authRequest.DeviceId = authPayload.DeviceID;
+            authRequest.DeviceName = authPayload.DeviceName;
             _logger.LogInformation("Auth request created...");
 
             return await _sessionManager.AuthenticateNewSession(authRequest).ConfigureAwait(false);
