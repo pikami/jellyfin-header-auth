@@ -20,8 +20,8 @@
         "changelog": "- Initial implementation",
         "targetAbi": "10.7.0.0",
         "sourceUrl": "https://github.com/pikami/jellyfin-header-auth/releases/download/1.0.0.7/jellyfinheaderauth_1.0.0.7.zip",
-        "checksum": "66db54db2dfb13fb57728e099dc53ab5",
-        "timestamp": "2022-04-24T21:21:38Z"
+        "checksum": "1a4aca2a3bbe8a2e2c74a0d33f2fc3f7",
+        "timestamp": "2022-04-25T15:57:36Z"
       }
     ]
   }
