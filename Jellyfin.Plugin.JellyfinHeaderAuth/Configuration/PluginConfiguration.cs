@@ -1,10 +1,11 @@
 using MediaBrowser.Model.Plugins;
 
-namespace Jellyfin.Plugin.JellyfinHeaderAuth.Configuration;
-
-public class PluginConfiguration : BasePluginConfiguration
+namespace Jellyfin.Plugin.JellyfinHeaderAuth.Configuration
 {
-    public PluginConfiguration()
+    public class PluginConfiguration : BasePluginConfiguration
     {
+        public PluginConfiguration()
+        {
+        }
     }
 }
